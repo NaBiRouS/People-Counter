@@ -1,19 +1,26 @@
+import os
 from pathlib import Path
 
+from dotenv import load_dotenv
 
-# Root directory of the project
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-# Input and output directories
-INPUT_DIR = PROJECT_ROOT / "data" / "input"
-OUTPUT_DIR = PROJECT_ROOT / "data" / "output"
+# Load environment variables from the .env file
+load_dotenv()
 
-# Input video used
-VIDEO_PATH = INPUT_DIR / "people_6.mp4"
+# FastAPI backend URL used by the Streamlit frontend
+API_URL = os.getenv(
+    "API_URL",
+    "http://127.0.0.1:8000",
+)
 
-# YOLO configuration
+# Directory where uploaded videos are temporarily stored
+UPLOAD_DIR = Path("data/uploads")
+
+# Directory where processed videos are stored
+OUTPUT_DIR = Path("data/output")
+
+# YOLO model used for person detection
 MODEL_NAME = "yolo11n.pt"
-TRACKER_NAME = "fasttrack.yaml"
 
-# COCO class ID for the person class
-PERSON_CLASS_ID = 0
+# Tracker configuration used by YOLO
+TRACKER_NAME = "fasttrack.yaml"

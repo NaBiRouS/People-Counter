@@ -1,4 +1,12 @@
-.venv
-*.pt
 .pytest_cache
+
+.env
+
 __pycache__/
+
+.venv
+
+*.pt
+
+data/uploads
+data/output
