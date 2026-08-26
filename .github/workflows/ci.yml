@@ -1,4 +1,4 @@
-name: CI
+name: People Counter CI
 
 # Run the workflow when code is pushed or a pull request is opened/updated
 on:
