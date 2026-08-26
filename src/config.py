@@ -13,6 +13,11 @@ API_URL = os.getenv(
     "http://127.0.0.1:8000",
 )
 
+PUBLIC_API_URL = os.getenv(
+    "PUBLIC_API_URL",
+    "http://127.0.0.1:8000"
+)
+
 # Directory where uploaded videos are temporarily stored
 UPLOAD_DIR = Path("data/uploads")
 

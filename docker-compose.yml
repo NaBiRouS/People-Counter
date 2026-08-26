@@ -1,0 +1,31 @@
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: dockerfile
+
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - .env
+
+    volumes:
+      - ./data:/app/data # Mount the data directory to persist data
+
+
+  ui:
+    build:
+      context: .
+      dockerfile: dockerfile.ui
+
+    ports:
+      - "8501:8501"
+
+    environment:
+      API_URL: http://api:8000
+      PUBLIC_API_URL: http://localhost:8000
+
+    depends_on:
+      - api

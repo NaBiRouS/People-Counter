@@ -1,5 +1,5 @@
 import time
-from src.config import API_URL
+from src.config import API_URL, PUBLIC_API_URL
 import requests
 import streamlit as st
 
@@ -110,7 +110,7 @@ if uploaded_file is not None:
             # =================== OPTION 01 ===================
             # # Retrieve the completed H.264 video from FastAPI
             # video_response = requests.get(
-            #     f"{API_URL}/videos/{job_id}",
+            #     f"{PUBLIC_API_URL}/videos/{job_id}",
             #     timeout=120,
             # )
 
@@ -133,7 +133,7 @@ if uploaded_file is not None:
 
             # =================== OPTION 02 ===================
             # Build the URL of the processed video
-            video_url = f"{API_URL}/videos/{job_id}"
+            video_url = f"{PUBLIC_API_URL}/videos/{job_id}"
 
             st.subheader("Processed Video")
 

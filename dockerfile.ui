@@ -1,0 +1,21 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Make the project root available for Python imports
+ENV PYTHONPATH=/app
+
+# Copy UI dependencies first so Docker can cache this layer
+COPY requirements-ui.txt .
+
+# Install Streamlit and its dependencies
+RUN pip install \
+    --no-cache-dir \
+    --default-timeout=300 \
+    -r requirements-ui.txt
+
+# Copy the application source code
+COPY src ./src
+
+# Start the Streamlit application
+CMD ["streamlit", "run", "src/ui/app.py", "--server.address=0.0.0.0", "--server.port=8501"]
