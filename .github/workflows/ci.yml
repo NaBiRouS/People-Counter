@@ -12,11 +12,11 @@ jobs:
     steps:
       # Download the repository contents
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Install Python
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -30,3 +30,17 @@ jobs:
       - name: Run tests
         run: |
           pytest
+
+      # Build the FastAPI Docker image
+      - name: Build API Docker image
+        run: |
+          docker build \
+            -f dockerfile \
+            -t people-counter-api:test .
+
+      # Build the Streamlit Docker image
+      - name: Build UI Docker image
+        run: |
+          docker build \
+            -f dockerfile.ui \
+            -t people-counter-ui:test .
