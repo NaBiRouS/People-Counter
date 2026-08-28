@@ -4,6 +4,12 @@ from threading import Thread
 from uuid import uuid4
 
 from src.services.video_processor import process_video
+from src.monitoring.metrics import (
+    VIDEOS_PROCESSED, VIDEOS_FAILED,
+    PEOPLE_ENTRIES, PEOPLE_EXITS,
+    PROCESSING_TIME,
+    ACTIVE_JOBS,
+)
 
 
 @dataclass
@@ -94,23 +100,32 @@ class JobManager:
         Returns:
             None.
         """
+        ACTIVE_JOBS.inc()
+        
         try:
             job.status = "processing"
 
-            results = process_video(
-                input_path=input_path,
-                output_path=output_path,
-            )
+            with PROCESSING_TIME.time():
+                results = process_video(
+                    input_path=input_path,
+                    output_path=output_path,
+                )
 
             job.entries = results["entries"]
+            PEOPLE_ENTRIES.inc(job.entries)
             job.exits = results["exits"]
+            PEOPLE_EXITS.inc(job.exits)
             job.status = "completed"
+            VIDEOS_PROCESSED.inc()
 
         except Exception as exc:
             job.status = "failed"
+            VIDEOS_FAILED.inc()
             job.error = str(exc)
 
         finally:
+            ACTIVE_JOBS.dec()
+            
             # Remove the original uploaded video after processing
             if input_path.exists():
                 input_path.unlink()
